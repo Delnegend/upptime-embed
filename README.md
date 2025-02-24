@@ -4,6 +4,13 @@ Custom upptime frontend page and APIs without rate limits.
 
 > Regex ftw.
 
+## Usage
+```
+https://upptime.delnegend.com/?user=upptime&repo=upptime
+```
+
+Replace `upptime` with your GitHub username and the upptime repo name.
+
 ## Development
 - Client:
     ```bash
