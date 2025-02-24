@@ -1,0 +1,11 @@
+services:
+    upptime-embed:
+        image: upptime-embed
+        container_name: upptime-embed
+        build:
+            context: .
+            dockerfile: Dockerfile
+        pull_policy: never
+        ports:
+            - 3001:3001
+        restart: unless-stopped
