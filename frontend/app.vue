@@ -1,27 +1,10 @@
 <script setup lang="ts">
-import { useQuery } from "@tanstack/vue-query";
 import { LoaderCircle, Moon, Sun } from "lucide-vue-next";
-import { onBeforeMount, ref, watchEffect } from "vue";
-import { toast } from "vue-sonner";
+import { onBeforeMount, ref } from "vue";
 
-import { useNuxtApp } from "#app";
-
+import { useAsyncData } from "#app";
 import Button from "./components/ui/Button.vue";
 import { cn } from "./lib/utils";
-
-const { $pwa } = useNuxtApp();
-
-watchEffect(() => {
-	if ($pwa?.needRefresh === true) {
-		toast.info("New version available", {
-			duration: 15000,
-			action: {
-				label: "Reload",
-				onClick: () => { window.location.reload(); },
-			},
-		});
-	}
-});
 
 const params = new URLSearchParams(window.location.search);
 
@@ -72,24 +55,20 @@ const overallLabel = {
 	unknown: "❓ Unknown",
 };
 
-const useUptime = useQuery({
-	queryKey: ["data"],
-	async queryFn({ signal }): Promise<UptimeResponse> {
-		const user = params.get("user");
-		if (!user || user === "") { throw new Error("Username is required"); }
+const { data: apiData, status: apiStatus, error: apiErr } = useAsyncData<UptimeResponse>(async () => {
+	const user = params.get("user");
+	if (!user || user === "") { throw new Error("Username is required"); }
 
-		const repo = params.get("repo");
-		if (!repo || repo === "") { throw new Error("Repository is required"); }
+	const repo = params.get("repo");
+	if (!repo || repo === "") { throw new Error("Repository is required"); }
 
-		const resp = await fetch(`/api/${user}/${repo}`, { signal });
+	const resp = await fetch(`/api/${user}/${repo}`);
 
-		if (!resp.ok) { throw new Error("Can't fetch data"); }
+	if (!resp.ok) { throw new Error("Can't fetch data"); }
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-		return resp.json();
-	},
-	refetchInterval: 1000 * 60 * 5, // 5 minutes
-});
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+	return resp.json();
+})
 
 const preferredColorScheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 const configuredColorScheme = localStorage.getItem("color-scheme") === "dark" ? "dark" : "light";
@@ -119,24 +98,23 @@ const viewDuration = ref<GraphDuration>(GraphDuration.All);
 
 <template>
 	<div class="mx-auto w-11/12 max-w-3xl">
-		<NuxtPwaManifest />
 		<div
-			v-if="useUptime.isError.value"
+			v-if="apiErr"
 			class="grid h-dvh place-items-center">
-			{{ useUptime.error.value }}
+			{{ apiErr.message }}
 		</div>
 		<div
-			v-if="useUptime.isLoading.value"
+			v-if="apiStatus === 'pending'"
 			class="grid h-dvh place-items-center">
 			<LoaderCircle
 				class="animate-spin"
 				:size="30" />
 		</div>
 		<div
-			v-if="useUptime.data.value"
+			v-if="apiData"
 			class="my-7 flex flex-col gap-3">
 			<div class="flex justify-between text-3xl font-semibold">
-				{{ overallLabel[useUptime.data.value.Overall] }}
+				{{ overallLabel[apiData.Overall] }}
 				<Button
 					variant="outline"
 					size="icon"
@@ -166,7 +144,7 @@ const viewDuration = ref<GraphDuration>(GraphDuration.All);
 			</div>
 
 			<div
-				v-for="detail in useUptime.data.value.Details"
+				v-for="detail in apiData.Details"
 				:key="detail.slug"
 				class="grid h-20 grid-cols-[.4rem_1fr] gap-4 overflow-hidden rounded-md border"
 				:style="{
