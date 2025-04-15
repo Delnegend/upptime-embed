@@ -10,5 +10,8 @@ _build_client:
 lint:
     cd frontend && pnpm eslint --cache --fix .
 
-build: _build_client
+build-static: _build_client
     go build -o main .
+
+extract-docker-image:
+    docker save Delnegend/upptime-embed | gzip > docker-image.tar.gz
