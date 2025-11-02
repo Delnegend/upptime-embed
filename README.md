@@ -45,7 +45,7 @@ Replace `upptime` with your GitHub username and the upptime repo name.
     caddy run --config Caddyfile
     ```
 
-## Endpoints
+## Exposed endpoints
 
 ### `API` `GET /api/alive`
 
