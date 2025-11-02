@@ -8,4 +8,5 @@ services:
         pull_policy: never
         ports:
             - 3001:3001
+        user: 1000:1000
         restart: unless-stopped
