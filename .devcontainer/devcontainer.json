@@ -1,0 +1,39 @@
+{
+    "name": "Upptime Embed",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Vue.volar",
+                "bradlc.vscode-tailwindcss",
+                "esbenp.prettier-vscode",
+                "YoavBls.pretty-ts-errors",
+                "golang.go"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "[vue]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[json]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[css]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                }
+            }
+        }
+    },
+    "runArgs": [
+        "--cap-add",
+        "PERFMON",
+        "-v",
+        "cargo-cache:/usr/local/cargo"
+    ],
+    "postCreateCommand": "bash .devcontainer/postinstall.sh"
+}
