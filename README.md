@@ -11,6 +11,23 @@ https://upptime.delnegend.com/?user=upptime&repo=upptime
 
 Replace `upptime` with your GitHub username and the upptime repo name.
 
+## Self-hosting
+1. Clone the repo
+    ```bash
+    git clone https://github.com/Delnegend/upptime-embed.git
+    cd upptime-embed
+    ```
+
+2. Copy `docker-compose.example.yml` to `docker-compose.yml` and edit the ports if needed.
+    ```bash
+    cp docker-compose.example.yml docker-compose.yml
+    ```
+
+3. Start the services
+    ```bash
+    docker compose up -d
+    ```
+
 ## Development
 - Client:
     ```bash
