@@ -29,16 +29,10 @@ Replace `upptime` with your GitHub username and the upptime repo name.
     ```
 
 ## Development
-- Client:
-    ```bash
-    cd frontend
-    pnpm i && pnpm dev
-    ```
+Start the client and server separately for development, along with Caddy for local HTTPS outside the devcontainer.
 
-- Server
-    ```bash
-    go run main.go
-    ```
+- Client: `j dev-client`
+- Server: `j dev-server
 
 - Caddy
     ```bash
