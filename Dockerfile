@@ -21,7 +21,7 @@ FROM gcr.io/distroless/static
 
 WORKDIR /app
 
-COPY --from=go-build /app/main .
+COPY --from=go-build /app/main ./
 
 EXPOSE 3001
 
