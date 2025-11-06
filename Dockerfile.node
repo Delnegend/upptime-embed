@@ -12,7 +12,7 @@ WORKDIR /app
 
 COPY routes routes
 COPY utils utils
-COPY main.go go.mod go.sum .
+COPY main.go go.mod go.sum . /
 COPY --from=node-build /app/.output/public ./frontend/.output/public
 
 RUN go build -o main .
