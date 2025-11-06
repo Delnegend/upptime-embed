@@ -3,7 +3,7 @@ import { Primitive, type PrimitiveProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 import { cn } from '~/lib/utils'
 
-interface Props extends PrimitiveProps {
+interface Props extends /* @vue-ignore */ PrimitiveProps {
 	variant?:
 		| 'default'
 		| 'destructive'
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
 					'h-7 rounded px-2': props.size === 'xs',
 					'h-8 rounded-md px-3 text-xs': props.size === 'sm',
 					'h-10 rounded-md px-8': props.size === 'lg',
-					'size-9': props.size === 'icon'
+					'aspect-square size-9': props.size === 'icon'
 				},
 				props.class
 			)
